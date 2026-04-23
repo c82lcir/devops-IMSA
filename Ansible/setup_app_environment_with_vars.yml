@@ -1,0 +1,32 @@
+- hosts: all
+  become: yes
+  vars:
+    directories_to_create:
+      - "/app_data"
+      - "/app_logs"
+      - "/app_config"
+  tasks:
+  - name: creer repertoire
+    file:
+      path: "{{ item  }}"
+      state: directory
+    loop: "{{ directories_to_create }}"
+  - name: Créer le groupe app_group
+    ansible.builtin.group:
+      name: app_group
+      state: present
+  - name: Créer l'utilisateur app_user avec répertoire home
+    ansible.builtin.user:
+      name: app_user
+      state: present
+      home: /home/app_user
+      groups: app_group
+      append: yes  # Ajoute l'utilisateur au groupe
+  - name: Définir app_user comme propriétaire du répertoire /app_data
+    ansible.builtin.file:
+      path: /app_data
+      owner: app_user
+      group: app_group
+      mode: "0744"
+      recurse: yes
+~                      
