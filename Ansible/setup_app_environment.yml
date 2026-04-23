@@ -1,9 +1,11 @@
 - hosts: all
   become: yes
+  vars:
+    app_directory: "/app_data"
   tasks:
   - name: creer repertoire
     file:
-      path: /app_data
+      path: "{{ app_directory }}"
       state: directory
   - name: Créer le groupe app_group
     ansible.builtin.group:
@@ -18,9 +20,8 @@
       append: yes  # Ajoute l'utilisateur au groupe
   - name: Définir app_user comme propriétaire du répertoire /app_data
     ansible.builtin.file:
-      path: /app_data
+      path: "{{ app_directory }}"
       owner: app_user
       group: app_group
       mode: "0744"
       recurse: yes
-                                                          
