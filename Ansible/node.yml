@@ -1,0 +1,4 @@
+directories_to_create:
+  - { path: "/app_data", mode: "0755" }
+  - { path: "/app_logs", mode: "0750" }
+  - { path: "/app_config", mode: "0700" }
